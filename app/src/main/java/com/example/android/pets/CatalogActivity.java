@@ -54,6 +54,13 @@ public class CatalogActivity extends AppCompatActivity {
         mDbHelper=new PetDbHelper(this);
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayDatabaseInfo();
+    }
+
     private void displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
@@ -90,7 +97,7 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_NAME, "Garfield");
         values.put(PetEntry.COLUMN_PET_BREED, "Tabby");
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
+        values.put(PetEntry.COLUMN_PET_WEIGHT, 0);
         Log.v("result",""+db.insert(PetEntry.TABLE_NAME, null, values));
     }
     @Override
