@@ -18,9 +18,8 @@ package com.example.android.pets;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,9 +64,6 @@ public class CatalogActivity extends AppCompatActivity {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         PetDbHelper mDbHelper = new PetDbHelper(this);
-
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String [] project={
                 PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
@@ -75,10 +71,15 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_GENDER,
                 PetEntry.COLUMN_PET_WEIGHT
         };
+        /*
+        // Create and/or open a database to read from it
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
         Cursor cursor=db.query(PetEntry.TABLE_NAME,project,null,null,null,null,null);
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-
+        */
+        Cursor cursor=getContentResolver().query(PetEntry.CONTENT_URI,project,null,null,null);
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
@@ -112,13 +113,12 @@ public class CatalogActivity extends AppCompatActivity {
     }
     private void insertPet()
     {
-        SQLiteDatabase db=mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(PetEntry.COLUMN_PET_NAME, "Garfield");
-        values.put(PetEntry.COLUMN_PET_BREED, "Tabby");
+        values.put(PetEntry.COLUMN_PET_NAME, "Toto");
+        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-        values.put(PetEntry.COLUMN_PET_WEIGHT, 0);
-        Log.v("result",""+db.insert(PetEntry.TABLE_NAME, null, values));
+        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
+        Uri newUri=getContentResolver().insert(PetEntry.CONTENT_URI,values);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
