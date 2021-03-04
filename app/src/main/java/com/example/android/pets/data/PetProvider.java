@@ -82,7 +82,11 @@ public class PetProvider extends ContentProvider {
                         null, null, sortOrder);
                 break;
             default:
+            {
+                Log.e("error1","error in uri");
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+            }
+
         }
         return cursor;
     }
@@ -123,7 +127,7 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Pet requires valid gender");
 
         Integer weight = values.getAsInteger(PetEntry.COLUMN_PET_WEIGHT);
-        if(weight!=null || weight<0)
+        if(weight==null || weight<0)
             throw new IllegalArgumentException("Pet requires valid Weight");
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -190,6 +194,12 @@ public class PetProvider extends ContentProvider {
         }
 
         // No need to check the breed, any value is valid (including null).
+
+        // If there are no values to update, then don't try to update the database
+        if (values.size() == 0) {
+            return 0;
+        }
+
         // Otherwise, get writeable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
