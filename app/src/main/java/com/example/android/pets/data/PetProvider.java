@@ -125,7 +125,7 @@ public class PetProvider extends ContentProvider {
     }
     private Uri insertPet(Uri uri, ContentValues values) {
         String name=values.getAsString(PetEntry.COLUMN_PET_NAME);
-        if(name == null)
+        if(name == null || name.isEmpty())
             throw new NullPointerException();
 
         Integer gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
@@ -189,7 +189,8 @@ public class PetProvider extends ContentProvider {
         // check that the name value is not null.
         if (values.containsKey(PetEntry.COLUMN_PET_NAME)) {
             String name = values.getAsString(PetEntry.COLUMN_PET_NAME);
-            if (name == null) {
+
+            if (name==null || name.isEmpty()) {
                 throw new IllegalArgumentException("Pet requires a name");
             }
         }

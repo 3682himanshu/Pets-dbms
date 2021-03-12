@@ -96,8 +96,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
         return true;
     }
-    private void insertPet()
-    {
+    private void insertPet() {
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Toto");
         values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
