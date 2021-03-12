@@ -97,7 +97,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // If the intent Does not contain a pet content uri, then we know that we are
         // creating new pet
         if(currentPetUri==null){
-            setTitle("Add a Pet");
+            // This is a new pet, so change the app bar to say "Add a Pet"
+            setTitle(getString(R.string.editor_activity_title_new_pet));
+
+            // Invalidate the options menu, so the "Delete" menu option can be hidden.
+            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+            invalidateOptionsMenu();
         }
         else{
             setTitle("Edit Pet");
@@ -118,7 +123,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setupSpinner();
 
     }
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new pet, hide the "Delete" menu item.
+        if (currentPetUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
+    }
     /**
      * Setup the dropdown spinner that allows the user to select the gender of the pet.
      */
